@@ -101,7 +101,7 @@
 	queryResultCache caches results of searches - ordered lists of document 
 		ids (DocList) based on a query, a sort, and the range of documents requested. -->
  
-	<queryResultCache class="org.solbase.cache.QueryResultCache" size="1280000"
+	<queryResultCache class="org.solbase.cache.QueryResultCache" size="500000"
 		initialSize="4096" autowarmCount="1024" />
 
 	<!-- An optimization for use with the queryResultCache. When a search is 
@@ -140,7 +140,7 @@
     <!-- a firstSearcher event is fired whenever a new searcher is being
          prepared but there is no current registered searcher to handle
          requests or to gain autowarming data from. -->
-&query;
+
     <!-- If a search request comes in and there is no current registered searcher,
          then immediately register the still warming searcher and use it.  If
          "false" then all requests will block until the first searcher is done
@@ -663,6 +663,12 @@
        in Solr's conf/xslt directory.  Changes to xslt files are checked for
        every xsltCacheLifetimeSeconds.
    -->
+   
+   <queryResponseWriter name="pbxml" class="com.pb.solbase.response.PBXMLResponseWriter" default="true"/>
+   <requestHandler name="pb" class="com.pb.solbase.handler.PhotobucketSearchHandler">
+       <int name="shard-socket-timeout">30000</int>
+       <int name="shard-connection-timeout">1000</int> 
+   </requestHandler>
    
   <queryResponseWriter name="xslt" class="org.apache.solr.request.XSLTResponseWriter">
     <int name="xsltCacheLifetimeSeconds">5</int>
